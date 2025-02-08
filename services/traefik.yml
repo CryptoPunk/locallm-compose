@@ -11,3 +11,9 @@ services:
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
+    configs:
+      - source: traefik_config
+        target: /etc/traefik/traefik.toml
+        uid: "0"
+        gid: "0"
+        mode: 0644

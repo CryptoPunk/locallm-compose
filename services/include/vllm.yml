@@ -8,7 +8,6 @@ services:
       - huggingface_cache:/data/huggingface
       - gguf:/data/gguf
     environment:
-      HUGGING_FACE_HUB_TOKEN: ${HF_TOKEN}
       XDG_CACHE_HOME: /data
       VLLM_CACHE_ROOT: /data/vllm
       VLLM_NO_USAGE_STATS: 0

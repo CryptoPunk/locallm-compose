@@ -10,9 +10,9 @@ services:
       service: comfy-ui
     labels:
       - traefik.enable=true
-      - traefik.http.routers.comfyui.entrypoints=http
-      - traefik.http.routers.comfyui.rule=PathPrefix(`/comfyui`)
-      - traefik.http.routers.comfyui.middlewares=comfyui-prefix@docker
+      - traefik.http.routers.comfyui-dockerml.entrypoints=http
+      - traefik.http.routers.comfyui-dockerml.rule=PathPrefix(`/comfyui`)
+      - traefik.http.routers.comfyui-dockerml.middlewares=comfyui-prefix@docker
       - traefik.http.middlewares.comfyui-prefix.stripprefix.prefixes=/comfyui
   traefik:
     restart: unless-stopped
@@ -28,13 +28,7 @@ services:
       - --api.debug=true
       - --tracing=true
       - --accesslog=true
-      - --api.insecure=true
-      - --providers.docker=true
-      - --providers.docker.exposedbydefault=false
-      - --api.disabledashboardad
-      - --entryPoints.open-webui.address=:8000
-      - --entryPoints.openai.address=:4000
-      - --entryPoints.http.address=:80
+
   open-webui:
     restart: unless-stopped
     extends:
@@ -51,9 +45,8 @@ services:
       - OPENAI_API_BASE_URL=http://litellm:4000/v1
     labels:
       - traefik.enable=true
-      - traefik.http.services.open-webui.loadbalancer.server.port=8080
-      - traefik.http.routers.open-webui.entrypoints=open-webui
-      - traefik.http.routers.open-webui.rule=PathPrefix(`/`)
+      - traefik.http.routers.open-webui-dockerml.entrypoints=open-webui
+      - traefik.http.routers.open-webui-dockerml.rule=PathPrefix(`/`)
   vllm-mistral7B-instruct:
     restart: unless-stopped
     extends:
@@ -81,9 +74,12 @@ services:
       service: litellm
     labels:
       - traefik.enable=true
-      - traefik.http.services.litellm.loadbalancer.server.port=4000
-      - traefik.http.routers.litellm.entrypoints=openai
-      - traefik.http.routers.litellm.rule=PathPrefix(`/`)
+      - traefik.http.routers.litellm-dockerml.entrypoints=openai
+      - traefik.http.routers.litellm-dockerml.rule=PathPrefix(`/`)
+      #- traefik.http.services.litellm.loadbalancer.server.port=4000
+
 configs:
   litellm_config:
-    file: ./config/litellm.yaml
+    file: config/litellm.yaml
+  traefik_config:
+    file: config/traefik.toml

@@ -9,7 +9,7 @@ services:
       - gguf:/data/gguf
     environment:
       XDG_CACHE_HOME: /data 
-      HF_TOKEN=${HUGGING_FACE_HUB_TOKEN}
+      HF_TOKEN: ${HUGGING_FACE_HUB_TOKEN}
       LLAMA_ARG_PORT: 6900
       LLAMA_ARG_HOST: 0.0.0.0
     expose: [6900]
