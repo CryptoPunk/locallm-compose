@@ -1,0 +1,15 @@
+services:
+  lmdeploy:
+    build: ../build/lmdeploy
+    image: localml/lmdeploy
+    extends:
+      file: gpu.yml
+      service: gpu
+    volumes:
+      - huggingface_cache:/data/huggingface
+      - gguf:/data/gguf
+    environment:
+      HUGGING_FACE_HUB_TOKEN: ${HF_TOKEN}
+      XDG_CACHE_HOME: /data
+    expose: [6900]
+    entrypoint: [ "lmdeploy", "serve", "api_server", "--server-name", "0.0.0.0", "--server-port", "6900"]

@@ -1,0 +1,19 @@
+services:
+  openai:
+    extends: 
+      file: ../include/vllm.yml
+      service: vllm
+    environment:
+      VLLM_API_KEY: ${API_KEY}
+    expose: [6900]
+    command: >
+        --port 6900
+        --task generate
+        --model mistralai/Mistral-7B-Instruct-v0.3
+        --quantization fp8
+        --tokenizer-mode "mistral"
+        --enforce-eager
+        --load-format runai_streamer
+        --tool-call-parser mistral
+        --enable-auto-tool-choice
+        --chat-template examples/tool_chat_template_mistral_parallel.jinja

@@ -1,0 +1,12 @@
+services:
+  litellm:
+    image: ghcr.io/berriai/litellm:main-latest
+    configs:
+      - source: litellm_config
+        target: /app/config.yaml
+        uid: "0"
+        gid: "0"
+        mode: 0644
+    #ports: ["4000:4000"]
+    expose: [4000]
+    command: --port 4000 --config /app/config.yaml

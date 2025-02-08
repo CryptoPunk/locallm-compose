@@ -1,0 +1,8 @@
+services:
+  openai:
+    extends: 
+      file: ../include/lmdeploy.yml
+      service: lmdeploy
+    command: >
+        --model-format awq
+        OpenGVLab/InternVL2_5-4B-MPO-AWQ

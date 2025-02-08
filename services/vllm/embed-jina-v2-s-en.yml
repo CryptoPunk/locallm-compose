@@ -1,0 +1,15 @@
+services:
+  openai:
+    extends: 
+      file: ../include/vllm.yml
+      service: vllm
+    environment:
+      VLLM_API_KEY: ${API_KEY}
+    expose: [6900]
+    command: >
+        --port 6900
+        --task embed
+        --model jinaai/jina-embeddings-v2-small-en
+        --quantization fp8
+        --enforce-eager
+        --load-format runai_streamer

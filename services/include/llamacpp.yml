@@ -1,0 +1,15 @@
+services:
+  llamacpp:
+    #extends:
+    #  file: gpu.yml
+    #  service: gpu
+    image: "ghcr.io/ggerganov/llama.cpp:server"
+    volumes:
+      - huggingface_cache:/data/huggingface
+      - gguf:/data/gguf
+    environment:
+      XDG_CACHE_HOME: /data 
+      HF_TOKEN=${HUGGING_FACE_HUB_TOKEN}
+      LLAMA_ARG_PORT: 6900
+      LLAMA_ARG_HOST: 0.0.0.0
+    expose: [6900]

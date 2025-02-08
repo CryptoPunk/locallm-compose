@@ -1,0 +1,32 @@
+services:
+  h2ogpt: 
+    image: 'localml/h2ogpt'
+    build: 'Dockerfiles/h2ogpt'
+    user: root
+    extends: 
+      file: include.yml
+      service: gpu
+    volumes:
+      - h2ogpt:/data
+    environment:
+      OPENAI_SERVER_PORT: 5000
+      GRADIO_SERVER_PORT: 7860
+    command: > 
+      /workspace/generate.py
+          --openai_port=5000
+          --use_auth_token=${HUGGING_FACE_HUB_TOKEN}
+          --use_safetensors=True
+          --use_gpu_id=False
+          --max_new_tokens=1024
+          --max_max_new_tokens=2048
+          --save_dir="/data/save"
+          --user_path="/data/user_data"
+          --llamacpp_path="/data/llamacpp_data"
+          --score_model=None
+          --load_awq=mode
+          --langchain_mode="UserData"
+          --langchain_modes="['UserData']"
+          --inference_server="vllm:mistral:6901:/v1:token-vllm-mistral"
+          --prompt_type=mistral
+          --enable_llava
+          --llava_model=vllm:llava:6902:/v1:token-vllm-mistral

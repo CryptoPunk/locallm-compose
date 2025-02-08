@@ -1,0 +1,8 @@
+services:
+  openai:
+    extends:
+      file: ../include/llamacpp.yml
+      service: llamacpp
+    environment:
+      LLAMA_ARG_FLASH_ATTN: enabled
+    command: -m /data/gguf/EXAONE-3.5-2.4B-Instruct-Q4_K_M.gguf -a EXAONE-3.5-2.4B-Instruct --port 6900 --host 0.0.0.0 -n 512

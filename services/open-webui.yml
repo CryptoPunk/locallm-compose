@@ -1,0 +1,6 @@
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:latest-cuda
+    container_name: open-webui
+    volumes:
+      - open-webui:/app/backend/data

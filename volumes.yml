@@ -1,0 +1,25 @@
+volumes:
+  gguf:
+    driver: local
+    driver_opts:
+      type: bind
+      device: ${STORAGE}/gguf/
+      o: bind
+  huggingface_cache:
+    driver: local
+    driver_opts:
+      type: bind
+      device: ${HOME}/.cache/huggingface/
+      o: bind
+  comfyui:
+    driver: local
+    driver_opts:
+      type: bind
+      device: ${STORAGE}/comfyui-data/
+      o: bind
+  open-webui:
+    driver: local
+    driver_opts:
+      type: bind
+      device: ${STORAGE}/open-webui-data/
+      o: bind

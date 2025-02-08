@@ -1,0 +1,10 @@
+services:
+  comfy-ui:
+    build: build/comfy-ui
+    image: localml/comfy-ui
+    volumes:
+      - comfyui:/data
+    extends: 
+      file: include/gpu.yml
+      service: gpu
+    command: /data/venv/bin/python3 /opt/ComfyUI/main.py --listen --base-directory /data/ --verbose DEBUG --normalvram

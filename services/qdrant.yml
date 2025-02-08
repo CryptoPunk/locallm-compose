@@ -1,0 +1,9 @@
+services:
+  qdrant:
+    image: qdrant/qdrant
+    volumes:
+      - qdrant:/qdrant/storage # Persist data
+    environment:
+      - QDRANT_STORAGE_PATH=/qdrant/storage
+      - QDRANT__SERVICE__API_KEY=${API_KEY}
+      - QDRANT__SERVICE__ENABLE_TLS=-1

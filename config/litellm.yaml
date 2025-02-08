@@ -1,0 +1,40 @@
+model_list:
+  - model_name: DeepSeek-R1-Distill-Qwen-7B
+    litellm_params:
+      model: openai/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B # the `openai/` prefix tells litellm it's openai compatible
+      api_base: http://vllm-dsr1-qwen7B:6900/v1
+      api_key: none
+    model_info:
+      mode: completion  
+  - model_name: Mistral-7B-Instruct-v0.3
+    litellm_params:
+      model: openai/mistralai/Mistral-7B-Instruct-v0.3
+      api_base: http://vllm-mistral7B-instruct:6900/v1
+      api_key: none
+    model_info:
+      mode: completion
+  - model_name: EXAONE-3.5-2.4B-Instruct
+    litellm_params:
+      model: openai/EXAONE-3.5-2.4B-Instruct
+      api_base: http://llamacpp-exaone:6900/v1
+      api_key: none
+    model_info:
+      mode: completion
+  - model_name: InternVL2_5-4B-MPO
+    litellm_params:
+      model: openai/OpenGVLab/InternVL2_5-4B-MPO-AWQ
+      api_base: http://lmdeploy-intern25-4B:6900/v1
+      api_key: none
+    model_info:
+      mode: completion
+  #- model_name: jina-embeddings-v2-small-en
+  #  litellm_params:
+  #- model_name: multilingual-e5-small
+  #  litellm_params:
+  #    model: huggingface/intfloat/multilingual-e5-small
+  #- model_name: noinstruct-small
+  #  litellm_params:
+  #    model: huggingface/avsolatorio/NoInstruct-small-Embedding-v0
+  #- model_name: gte-micro-v4
+  #  litellm_params:
+  #    model: huggingface/mihaiii/gte-micro-v4

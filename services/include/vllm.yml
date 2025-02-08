@@ -1,0 +1,17 @@
+services:
+  vllm:
+    extends:
+      file: gpu.yml
+      service: gpu
+    image: "vllm/vllm-openai:latest"
+    volumes:
+      - huggingface_cache:/data/huggingface
+      - gguf:/data/gguf
+    environment:
+      HUGGING_FACE_HUB_TOKEN: ${HF_TOKEN}
+      XDG_CACHE_HOME: /data
+      VLLM_CACHE_ROOT: /data/vllm
+      VLLM_NO_USAGE_STATS: 0
+      VLLM_DO_NOT_TRACK: 0
+      VLLM_ALLOW_RUNTIME_LORA_UPDATING: 0
+    expose: [6900]

@@ -1,0 +1,89 @@
+#name: DockerML
+include:
+  - volumes.yml
+  - networks.yml
+services:
+  comfyui:
+    restart: unless-stopped
+    extends: 
+      file: services/comfy-ui.yml
+      service: comfy-ui
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.comfyui.entrypoints=http
+      - traefik.http.routers.comfyui.rule=PathPrefix(`/comfyui`)
+      - traefik.http.routers.comfyui.middlewares=comfyui-prefix@docker
+      - traefik.http.middlewares.comfyui-prefix.stripprefix.prefixes=/comfyui
+  traefik:
+    restart: unless-stopped
+    extends:
+      file: services/traefik.yml
+      service: traefik
+    ports:
+      - "80:80"
+      - "4000:4000"
+      - "8000:8000"
+    command: 
+      - --ping=true
+      - --api.debug=true
+      - --tracing=true
+      - --accesslog=true
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --api.disabledashboardad
+      - --entryPoints.open-webui.address=:8000
+      - --entryPoints.openai.address=:4000
+      - --entryPoints.http.address=:80
+  open-webui:
+    restart: unless-stopped
+    extends:
+      file: services/open-webui.yml
+      service: open-webui
+    environment:
+      - ENABLE_RAG_WEB_SEARCH=true
+      - RAG_WEB_SEARCH_ENGINE=duckduckgo
+      - ENABLE_IMAGE_GENERATION=true
+      - IMAGE_GENERATION_ENGINE=comfyui
+      - COMFYUI_BASE_URL=http://comfyui:8188
+      - ENABLE_OLLAMA_API=false
+      - WHISPER_MODEL=large
+      - OPENAI_API_BASE_URL=http://litellm:4000/v1
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.open-webui.loadbalancer.server.port=8080
+      - traefik.http.routers.open-webui.entrypoints=open-webui
+      - traefik.http.routers.open-webui.rule=PathPrefix(`/`)
+  vllm-mistral7B-instruct:
+    restart: unless-stopped
+    extends:
+      file: services/vllm/mistral-7B-instruct.yml
+      service: openai
+  vllm-dsr1-qwen7B:
+    restart: unless-stopped
+    extends:
+      file: services/vllm/dsr1-qwen-7B.yml
+      service: openai
+  lmdeploy-intern25-4B:
+    restart: unless-stopped
+    extends:
+      file: services/lmdeploy/intern25-4B.yml
+      service: openai
+  llamacpp-exaone:
+    restart: unless-stopped
+    extends:
+      file: services/llamacpp/exaone35-2.4B-instruct.yml
+      service: openai
+  litellm:
+    restart: unless-stopped
+    extends:
+      file: services/litellm.yml
+      service: litellm
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.litellm.loadbalancer.server.port=4000
+      - traefik.http.routers.litellm.entrypoints=openai
+      - traefik.http.routers.litellm.rule=PathPrefix(`/`)
+configs:
+  litellm_config:
+    file: ./config/litellm.yaml
