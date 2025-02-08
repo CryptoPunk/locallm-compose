@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 if [ ! -d /data ]; then
     echo "You must mount the the /data volume!"
