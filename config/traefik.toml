@@ -1,0 +1,14 @@
+[api]
+    insecure=true
+    disabledashboardad=true
+
+[providers.docker]
+    endpoint = "unix:///var/run/docker.sock"
+    exposedbydefault=false
+
+[entryPoints.open-webui]
+    address=":8000"
+[entryPoints.openai]
+    address=":4000"
+[entryPoints.http]
+    address=":80"
