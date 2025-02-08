@@ -1,4 +1,4 @@
-#name: DockerML
+name: locallm
 include:
   - volumes.yml
   - networks.yml
