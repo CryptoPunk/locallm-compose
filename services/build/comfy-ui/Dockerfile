@@ -8,6 +8,6 @@ RUN python3 -m pip install --root-user-action=ignore --break-system-packages -r 
 
 EXPOSE 8818
 WORKDIR /root
-COPY ./entrypoint.sh /
+COPY --chown=root:root --chmod=0755 ./entrypoint.sh /
 ENTRYPOINT [ "/entrypoint.sh" ]
 CMD [ "/data/venv/bin/python3", "/opt/ComfyUI/main.py", "--listen", "--base-directory", "/data/", "--verbose", "DEBUG"]
