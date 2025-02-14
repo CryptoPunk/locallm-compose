@@ -5,6 +5,8 @@ include:
 services:
   comfyui:
     restart: unless-stopped
+    depends_on:
+      - traefik
     extends: 
       file: services/comfy-ui.yml
       service: comfy-ui
@@ -34,6 +36,9 @@ services:
     extends:
       file: services/open-webui.yml
       service: open-webui
+    depends_on:
+      - litellm
+      - traefik
     environment:
       - ENABLE_RAG_WEB_SEARCH=true
       - RAG_WEB_SEARCH_ENGINE=duckduckgo
@@ -49,26 +54,36 @@ services:
       - traefik.http.routers.open-webui-dockerml.rule=PathPrefix(`/`)
   vllm-mistral7B-instruct:
     restart: unless-stopped
+    depends_on:
+      - litellm
     extends:
       file: services/vllm/mistral-7B-instruct.yml
       service: openai
   vllm-dsr1-qwen7B:
     restart: unless-stopped
+    depends_on:
+      - litellm
     extends:
       file: services/vllm/dsr1-qwen-7B.yml
       service: openai
   lmdeploy-intern25-4B:
     restart: unless-stopped
+    depends_on:
+      - litellm
     extends:
       file: services/lmdeploy/intern25-4B.yml
-      service: openai
+      service: openaiProjects
   llamacpp-exaone:
     restart: unless-stopped
+    depends_on:
+      - litellm
     extends:
       file: services/llamacpp/exaone35-2.4B-instruct.yml
       service: openai
   litellm:
     restart: unless-stopped
+    depends_on:
+      - traefik
     extends:
       file: services/litellm.yml
       service: litellm
